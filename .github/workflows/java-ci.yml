@@ -29,3 +29,13 @@ jobs:
         run: |
           java -cp out com.mycompany.main.Main
         if: false
+
+        - name: Package into JAR
+  run: |
+    echo "Main-Class: com.mycompany.main.Main" > manifest.txt
+    jar cfm app.jar manifest.txt -C out .
+    - name: Upload JAR
+  uses: actions/upload-artifact@v3
+  with:
+    name: QuickChat-App
+    path: app.jar
