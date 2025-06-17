@@ -20,8 +20,8 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: Compile Java files
-      run: javac -d out src/main/java/com/mycompany/*.java
+    - name: ☕ Compile Java files
+      run: javac -d out $(find src/main/java -name "*.java")
 
     - name: Run Main class
       run: java -cp out com.mycompany.POE_Part3
