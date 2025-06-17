@@ -2,40 +2,26 @@ name: Java CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ "main" ]
   pull_request:
-    branches: [ main ]
+    branches: [ "main" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Set up Java
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17' # or 21, if you're using that
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
 
-      - name: Compile Java code
-        run: |
-          mkdir -p out
-          javac -d out $(find . -name "*.java")
+    - name: Compile Java files
+      run: javac -d out src/main/java/com/mycompany/*.java
 
-      - name: Run Main (optional)
-        run: |
-          java -cp out com.mycompany.main.Main
-        if: false
-
-        - name: Package into JAR
-  run: |
-    echo "Main-Class: com.mycompany.main.Main" > manifest.txt
-    jar cfm app.jar manifest.txt -C out .
-    - name: Upload JAR
-  uses: actions/upload-artifact@v3
-  with:
-    name: QuickChat-App
-    path: app.jar
+    - name: Run Main class
+      run: java -cp out com.mycompany.POE_Part3
