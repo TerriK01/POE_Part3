@@ -1,0 +1,32 @@
+# .github/workflows/java-ci.yml
+name: Java CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17' # or 21, if you're using that
+
+      - name: Compile Java code
+        run: |
+          mkdir -p out
+          javac -d out $(find . -name "*.java")
+
+      - name: Run Main (optional)
+        run: |
+          java -cp out com.mycompany.main.Main
+        if: false  
