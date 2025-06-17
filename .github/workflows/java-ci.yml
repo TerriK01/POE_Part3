@@ -2,26 +2,26 @@ name: Java CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
 
     - name: Set up JDK 17
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
 
-    - name: ☕ Compile Java files
-      run: javac -d out $(find src/main/java -name "*.java")
+    - name: Compile Java code
+      run: javac -cp .:test:$(find ~/.m2 -name '*.jar' | tr '\n' ':') $(find src -name "*.java") $(find test -name "*.java")
 
-    - name: Run Main class
-      run: java -cp out com.mycompany.POE_Part3
+    - name: Run JUnit tests
+      run: java -cp .:test:src:$(find ~/.m2 -name '*.jar' | tr '\n' ':') org.junit.platform.console.ConsoleLauncher --scan-classpath --include-classname '.*Test.*'
